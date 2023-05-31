@@ -4,7 +4,10 @@ require './lib/author'
 
 RSpec.describe Author do
   before do
-    @charlotte_bronte = Author.new({first_name: "Charlotte", last_name: "Bronte"})
+    @charlotte_bronte = Author.new({
+                                    first_name: "Charlotte", 
+                                    last_name: "Bronte"
+                                    })
   end
   
   describe "#exists" do
