@@ -48,26 +48,76 @@ RSpec.describe Library do
       professor = @charlotte_bronte.write("The Professor", "1857")
       
       mockingbird = @harper_lee.write("To Kill a Mockingbird", "July 11, 1960")
-
+      
       bronte_expected = {
                           start: "1847",
                           end: "1857"
                         }
+    
+    expect(@dpl.publication_time_frame(@charlotte_bronte)).to eq(bronte_expected)
+    
+    lee_expected = {
+                    start: "1960",
+                    end: "1960"
+                  }
+  
+  expect(@dpl.publication_time_frame(@harper_lee)).to eq(lee_expected)
+end
+end
 
-      expect(@dpl.publication_time_frame(@charlotte_bronte)).to eq(bronte_expected)
+  describe "#checkout books" do
+    it "has a checkout(book) method" do
+      jane_eyre = @charlotte_bronte.write("Jane Eyre", "October 16, 1847")   
+      professor = @charlotte_bronte.write("The Professor", "1857")
+      villette = @charlotte_bronte.write("Villette", "1853")
       
-      lee_expected = {
-                        start: "1960",
-                        end: "1960"
-                      }
+      mockingbird = @harper_lee.write("To Kill a Mockingbird", "July 11, 1960")
 
-      expect(@dpl.publication_time_frame(@harper_lee)).to eq(lee_expected)
+      @dpl.add_author(@harper_lee)
+      
+      expect(@dpl.checkout(mockingbird)).to eq(true)
+      expect(@dpl.checkout(mockingbird)).to eq(false)
+      
+      expect(@dpl.checkout(professor)).to eq(false)
+      @dpl.add_author(@charlotte_bronte)
+      expect(@dpl.checkout(professor)).to eq(true)
+    end
+    
+    it "has a checked_out_books method" do
+      jane_eyre = @charlotte_bronte.write("Jane Eyre", "October 16, 1847")   
+      professor = @charlotte_bronte.write("The Professor", "1857")
+      villette = @charlotte_bronte.write("Villette", "1853")
+      
+      mockingbird = @harper_lee.write("To Kill a Mockingbird", "July 11, 1960")
+      
+      @dpl.add_author(@charlotte_bronte)
+      @dpl.add_author(@harper_lee)
+      
+      expect(@dpl.checkout(mockingbird)).to eq(true)
+      expect(@dpl.checkout(professor)).to eq(true)
+
+      expect(@dpl.checked_out_books).to eq([mockingbird, professor])
+    end
+
+    it "has a return(book) method" do
+      jane_eyre = @charlotte_bronte.write("Jane Eyre", "October 16, 1847")   
+      professor = @charlotte_bronte.write("The Professor", "1857")
+      villette = @charlotte_bronte.write("Villette", "1853")
+      
+      mockingbird = @harper_lee.write("To Kill a Mockingbird", "July 11, 1960")
+      
+      @dpl.add_author(@charlotte_bronte)
+      @dpl.add_author(@harper_lee)
+      
+      expect(@dpl.checkout(mockingbird)).to eq(true)
+      expect(@dpl.checkout(professor)).to eq(true)
+
+      expect(@dpl.checked_out_books).to eq([mockingbird, professor])
+      
+      @dpl.return(mockingbird)
+
+      expect(@dpl.checked_out_books).to eq([professor])
     end
   end
-
-  describe "#checkout(book)" do
-    it "can check out a book" do
-      
-    end
-  end
+  
 end
