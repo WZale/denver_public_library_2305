@@ -40,4 +40,34 @@ RSpec.describe Library do
       expect(@dpl.books).to eq([jane_eyre, professor, villette, mockingbird])
     end
   end
+  
+  describe "#publication_time_frame(author)" do
+    it "can show the publication dates of an author's first and last book" do
+      jane_eyre = @charlotte_bronte.write("Jane Eyre", "October 16, 1847")   
+      villette = @charlotte_bronte.write("Villette", "1853")
+      professor = @charlotte_bronte.write("The Professor", "1857")
+      
+      mockingbird = @harper_lee.write("To Kill a Mockingbird", "July 11, 1960")
+
+      bronte_expected = {
+                          start: "1847",
+                          end: "1857"
+                        }
+
+      expect(@dpl.publication_time_frame(@charlotte_bronte)).to eq(bronte_expected)
+      
+      lee_expected = {
+                        start: "1960",
+                        end: "1960"
+                      }
+
+      expect(@dpl.publication_time_frame(@harper_lee)).to eq(lee_expected)
+    end
+  end
+
+  describe "#checkout(book)" do
+    it "can check out a book" do
+      
+    end
+  end
 end
