@@ -33,6 +33,7 @@ class Library
       false
     else
       @checked_out_books << checked_out_book
+      book.checkout_counter
       true
     end
   end
@@ -40,6 +41,31 @@ class Library
   def return(book)
     @checked_out_books.delete(book)
     @books << book
+  end
+
+  def most_popular_book
+    popular_books = []
+    popular_book_inside_library = @books.max_by do |book| 
+      book.times_checked_out
+    end
+    popular_books << popular_book_inside_library
+
+    popular_book_outside_library = @checked_out_books.max_by do |book| 
+      book.times_checked_out
+    end
+    popular_books << popular_book_outside_library
+
+    popular_books.max_by do |book|
+      book.times_checked_out
+    end
+  end
+
+  def inventory
+    inventory_hash = {}
+    @authors.each do |author|
+      inventory_hash[author] = author.books
+    end
+    inventory_hash
   end
 
 end
