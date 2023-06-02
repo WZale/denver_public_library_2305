@@ -115,9 +115,54 @@ end
       expect(@dpl.checked_out_books).to eq([mockingbird, professor])
       
       @dpl.return(mockingbird)
-
+      
       expect(@dpl.checked_out_books).to eq([professor])
     end
   end
   
+  describe "#most_popular_book" do
+    it "can show what book has been checked out the most times" do
+      jane_eyre = @charlotte_bronte.write("Jane Eyre", "October 16, 1847")   
+      professor = @charlotte_bronte.write("The Professor", "1857")
+      villette = @charlotte_bronte.write("Villette", "1853")
+      
+      mockingbird = @harper_lee.write("To Kill a Mockingbird", "July 11, 1960")
+      
+      @dpl.add_author(@charlotte_bronte)
+      @dpl.add_author(@harper_lee)
+      
+      @dpl.checkout(mockingbird)
+      @dpl.return(mockingbird)
+      @dpl.checkout(mockingbird)
+      @dpl.return(mockingbird)
+      @dpl.checkout(mockingbird)
+      
+      @dpl.checkout(professor)
+      @dpl.return(mockingbird)
+      @dpl.checkout(professor)
+
+      expect(@dpl.most_popular_book).to eq(mockingbird)
+    end
+  end
+
+  describe "#inventory" do
+    it "can return information on authors and their books" do
+      jane_eyre = @charlotte_bronte.write("Jane Eyre", "October 16, 1847")   
+      professor = @charlotte_bronte.write("The Professor", "1857")
+      villette = @charlotte_bronte.write("Villette", "1853")
+      
+      mockingbird = @harper_lee.write("To Kill a Mockingbird", "July 11, 1960")
+      
+      @dpl.add_author(@charlotte_bronte)
+      @dpl.add_author(@harper_lee)
+
+      expected = {
+                  @charlotte_bronte => [jane_eyre, professor, villette],
+                  @harper_lee => [mockingbird]  
+                }
+    
+    expect(@dpl.inventory).to eq(expected)
+    end
+  end
+
 end
